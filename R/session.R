@@ -26,6 +26,7 @@ setMethod(f = "initialize", signature = "Session", definition = function(.Object
   if (vs[2] < 1) {
     stop("rsyncrosim requires at least SyncroSim version 2.1.0.")
   }
+  
   return(.Object)
 })
 
@@ -137,7 +138,7 @@ setMethod("session", signature(x = "missingOrNULLOrChar"), function(x, silent, p
     warning("Default SyncroSim installation not found. Either install SyncroSim in the default location, or explicitly set the session path. See ?session for details.")
     return(SyncroSimNotFound(warn = FALSE))
   }
-
+  
   return(new("Session", path, silent, printCmd))
 })
 

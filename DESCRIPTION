@@ -52,6 +52,7 @@ Collate:
     'backup.R'
     'breakpoint.R'
     'command.R'
+    'conda.R'
     'datasheet.R'
     'datasheetRaster.R'
     'dateModified.R'

@@ -125,11 +125,33 @@ setMethod("run", signature(ssimObject = "SsimObject"), function(ssimObject, scen
       if ((copyExternalInputs == TRUE) & (jobs > 1)) {
         args[["copyextfiles"]] <- "yes"
       }
-
+      
       tt <- command(args, .session(x))
+      
+      if (grepl("Conda not currently installed", tt[1])) {
+        input <- readline(prompt = tt[1])
+        if (tolower(input) == "y") {
+          forceCondaArg <- list(forceconda = NULL)
+          tt <- command(c(args, forceCondaArg), .session(x))
+          tt <- tt[length(tt)]
+        } else {
+          stop("Conda installation required to run this Library.")
+        }
+      }
+      
+      if (grepl("required Conda environment is currently missing", tt[1])) {
+        input <- readline(prompt = tt[1])
+        if (tolower(input) == "y") {
+          forceCondaArg <- list(forceconda = NULL)
+          tt <- command(c(args, forceCondaArg), .session(x))
+          tt <- tt[length(tt)]
+        } else {
+          stop("Missing Conda environment required to run this Library.")
+        }
+      }
 
       for (i in tt) {
-        if (startsWith(i, "Result scenario ID is:")) {
+        if (grepl("Result scenario ID is:", i)) {
           resultId <- strsplit(i, ": ", fixed = TRUE)[[1]][2]
         } else {
           print(i)
